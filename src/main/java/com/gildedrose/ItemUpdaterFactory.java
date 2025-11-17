@@ -6,10 +6,14 @@ public class ItemUpdaterFactory {
     }
 
     public static ItemUdpater updaterFor(Item item) {
-        if (item.name == "Aged Brie") {
-            return new AgingItemUpdater();
+        switch (item.name) {
+            case "Aged Brie":
+                return new AgingItemUpdater();
+            case "Backstage passes to a TAFKAL80ETC concert":
+                return new ConcertPassUpdater();
+            default:
+                return new CommonUpdater();
         }
-        return new CommonUpdater();
     }
 
 }

@@ -8,10 +8,20 @@ class GildedRoseTest {
 
     // region random items
     @Test
+    void assertAnyItemQualityInsideBoundariesAtCreation() {
+        Item[] items = new Item[] {
+                new ItemBuilder().named("Any item").expiresIn(1).withQuality(-6).build(),
+                new ItemBuilder().named("Any item").expiresIn(1).withQuality(55).build(),
+        };
+        assertEquals(0, items[0].quality);
+        assertEquals(50, items[1].quality);
+    }
+
+    @Test
     void assertAnyItemQualityNotBelowZero() {
         Item[] items = new Item[] {
-                new Item("Any Item", 1, 0),
-                new Item("Any Item", -1, 0)
+                new ItemBuilder().named("Any item").expiresIn(1).withQuality(0).build(),
+                new ItemBuilder().named("Any item").expiresIn(-1).withQuality(0).build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -21,7 +31,7 @@ class GildedRoseTest {
 
     @Test
     void assertAnyItemQualityDecreasesBeforeSellIn() {
-        Item[] items = new Item[] { new Item("Any Item", 3, 3) };
+        Item[] items = new Item[] { new ItemBuilder().named("Any item").expiresIn(3).withQuality(3).build() };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals(2, app.items[0].sellIn);
@@ -29,7 +39,7 @@ class GildedRoseTest {
 
     @Test
     void assertAnyItemQualityDecreasesTwiceAsFastAfterSellIn() {
-        Item[] items = new Item[] { new Item("Any Item", -1, 3) };
+        Item[] items = new Item[] { new ItemBuilder().named("Any item").expiresIn(-1).withQuality(3).build() };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals(1, app.items[0].quality);
@@ -38,9 +48,9 @@ class GildedRoseTest {
     @Test
     void assertAnyItemSellInDecreases() {
         Item[] items = new Item[] {
-                new Item("Any Item", 3, 0),
-                new Item("Any Item", 1, 0),
-                new Item("Any Item", -1, 0)
+                new ItemBuilder().named("Any item").expiresIn(3).withQuality(0).build(),
+                new ItemBuilder().named("Any item").expiresIn(1).withQuality(0).build(),
+                new ItemBuilder().named("Any item").expiresIn(-1).withQuality(0).build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -54,8 +64,8 @@ class GildedRoseTest {
     @Test
     void assertAgedBrieSellInDecreases() {
         Item[] items = new Item[] {
-                new Item("Aged Brie", 5, 10),
-                new Item("Aged Brie", -5, 10)
+                new ItemBuilder().named("Aged Brie").expiresIn(5).withQuality(10).build(),
+                new ItemBuilder().named("Aged Brie").expiresIn(-5).withQuality(10).build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -65,7 +75,7 @@ class GildedRoseTest {
 
     @Test
     void assertAgedBrieQualityAugmentsBeforeSellIn() {
-        Item[] items = new Item[] { new Item("Aged Brie", 5, 10) };
+        Item[] items = new Item[] { new ItemBuilder().named("Aged Brie").expiresIn(5).withQuality(10).build(), };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals(11, app.items[0].quality);
@@ -73,7 +83,7 @@ class GildedRoseTest {
 
     @Test
     void assertAgedBrieQualityAugmentsTwiceAsFastAfterSellIn() {
-        Item[] items = new Item[] { new Item("Aged Brie", -1, 10) };
+        Item[] items = new Item[] { new ItemBuilder().named("Aged Brie").expiresIn(-1).withQuality(10).build(), };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals(12, app.items[0].quality);
@@ -82,8 +92,8 @@ class GildedRoseTest {
     @Test
     void assertAgedBrieQualityStopsAugmentingPastLimit() {
         Item[] items = new Item[] {
-                new Item("Aged Brie", 5, 50),
-                new Item("Aged Brie", -5, 50),
+                new ItemBuilder().named("Aged Brie").expiresIn(5).withQuality(50).build(),
+                new ItemBuilder().named("Aged Brie").expiresIn(-5).withQuality(50).build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -96,9 +106,12 @@ class GildedRoseTest {
     @Test
     void assertConcertQualityAugmentsBeforeSellIn() {
         Item[] items = new Item[] {
-                new Item("Backstage passes to a TAFKAL80ETC concert", 15, 0),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 10, 0),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 5, 0),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(15).withQuality(0)
+                        .build(),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(10).withQuality(0)
+                        .build(),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(5).withQuality(0)
+                        .build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -110,8 +123,10 @@ class GildedRoseTest {
     @Test
     void assertConcertQualitySetsToZeroAfterSellIn() {
         Item[] items = new Item[] {
-                new Item("Backstage passes to a TAFKAL80ETC concert", 0, 30),
-                new Item("Backstage passes to a TAFKAL80ETC concert", -1, 0),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(0).withQuality(30)
+                        .build(),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(-1).withQuality(0)
+                        .build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -122,9 +137,12 @@ class GildedRoseTest {
     @Test
     void assertConcertQualityStopsAugmentingPastLimit() {
         Item[] items = new Item[] {
-                new Item("Backstage passes to a TAFKAL80ETC concert", 15, 50),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 10, 50),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 5, 50),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(15).withQuality(50)
+                        .build(),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(10).withQuality(50)
+                        .build(),
+                new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(5).withQuality(50)
+                        .build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -137,10 +155,24 @@ class GildedRoseTest {
     // region Sulfuras
 
     @Test
-    void assertSulfurasQualityNeverChanges() {
+    void assertLegendaryQualityIsProperlySet() {
         Item[] items = new Item[] {
-                new Item("Sulfuras, Hand of Ragnaros", 5, 80),
-                new Item("Sulfuras, Hand of Ragnaros", -5, 80),
+                new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(5).withQuality(110)
+                        .build(),
+                new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(-5).withQuality(-30)
+                        .build(),
+        };
+        assertEquals(80, items[0].quality);
+        assertEquals(80, items[1].quality);
+    }
+
+    @Test
+    void assertLegendaryQualityNeverChanges() {
+        Item[] items = new Item[] {
+                new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(5).withQuality(80)
+                        .build(),
+                new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(-5).withQuality(80)
+                        .build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -151,8 +183,10 @@ class GildedRoseTest {
     @Test
     void assertSulfurasSellInNeverChanges() {
         Item[] items = new Item[] {
-                new Item("Sulfuras, Hand of Ragnaros", 5, 80),
-                new Item("Sulfuras, Hand of Ragnaros", -5, 80),
+                new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(5).withQuality(80)
+                        .build(),
+                new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(-5).withQuality(80)
+                        .build(),
         };
         GildedRose app = new GildedRose(items);
         app.updateQuality();

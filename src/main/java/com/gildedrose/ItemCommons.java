@@ -8,6 +8,6 @@ public class ItemCommons {
     }
 
     public static boolean isExpired(Item item) {
-        return item.sellIn < 0;
+        return item.sellIn <= 0;
     }
 }

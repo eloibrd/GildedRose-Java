@@ -4,16 +4,20 @@ public class CommonUpdater implements ItemUdpater {
 
     @Override
     public void update(Item item) {
-        if (ItemCommons.canDecreaseQuality(item)) {
-            decreaseQuality(item);
-        }
+        item.quality -= getQualityDecreaseValue(item);
         item.sellIn--;
     }
 
-    private void decreaseQuality(Item item) {
+    private int getQualityDecreaseValue(Item item) {
+        int value;
         if (ItemCommons.isExpired(item)) {
-            item.quality--;
+            value = 2;
+        } else {
+            value = 1;
         }
-        item.quality--;
+        if (item.quality - value < ItemCommons.MIN_ITEM_QUALITY) {
+            value = item.quality;
+        }
+        return value;
     }
 }

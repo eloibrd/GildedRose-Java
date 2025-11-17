@@ -1,16 +1,10 @@
 package com.gildedrose;
 
 public class ItemCommons {
+    public static final int MAX_ITEM_QUALITY = 50;
+    public static final int MIN_ITEM_QUALITY = 0;
 
     private ItemCommons() {
-    }
-
-    public static boolean canDecreaseQuality(Item item) {
-        return item.quality > 0;
-    }
-
-    public static boolean canIncreaseQuality(Item item) {
-        return item.quality < 50;
     }
 
     public static boolean isExpired(Item item) {

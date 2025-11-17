@@ -4,17 +4,21 @@ public class AgingItemUpdater implements ItemUdpater {
 
     @Override
     public void update(Item item) {
-        if (ItemCommons.canIncreaseQuality(item)) {
-            increaseQuality(item);
-        }
+        item.quality += getQualityIncreaseValue(item);
         item.sellIn--;
     }
 
-    private void increaseQuality(Item item) {
+    private int getQualityIncreaseValue(Item item) {
+        int value;
         if (ItemCommons.isExpired(item)) {
-            item.quality++;
+            value = 2;
+        } else {
+            value = 1;
         }
-        item.quality++;
+        if (item.quality + value > ItemCommons.MAX_ITEM_QUALITY) {
+            return ItemCommons.MAX_ITEM_QUALITY - item.quality;
+        }
+        return value;
     }
 
 }

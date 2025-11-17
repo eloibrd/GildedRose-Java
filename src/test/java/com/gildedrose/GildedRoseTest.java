@@ -34,7 +34,7 @@ class GildedRoseTest {
         Item[] items = new Item[] { new ItemBuilder().named("Any item").expiresIn(3).withQuality(3).build() };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        assertEquals(2, app.items[0].sellIn);
+        assertEquals(2, app.items[0].quality);
     }
 
     @Test
@@ -181,7 +181,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void assertSulfurasSellInNeverChanges() {
+    void assertLegendarySellInNeverChanges() {
         Item[] items = new Item[] {
                 new ItemBuilder().named("Sulfuras, Hand of Ragnaros").expiresIn(5).withQuality(80)
                         .build(),

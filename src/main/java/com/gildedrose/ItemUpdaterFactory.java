@@ -6,16 +6,16 @@ public class ItemUpdaterFactory {
     }
 
     public static ItemUdpater updaterFor(Item item) {
-        switch (item.name) {
-            case "Aged Brie":
-                return new AgingItemUpdater();
-            case "Backstage passes to a TAFKAL80ETC concert":
-                return new ConcertPassUpdater();
-            case "Sulfuras, Hand of Ragnaros":
-                return new LegendaryItemUpdater();
-            default:
-                return new CommonUpdater();
-        }
+        if (ItemCommons.isAging(item))
+            return new AgingItemUpdater();
+
+        if (ItemCommons.isConcertPass(item))
+            return new ConcertPassUpdater();
+
+        if (ItemCommons.isLegendary(item))
+            return new LegendaryItemUpdater();
+
+        return new CommonUpdater();
     }
 
 }

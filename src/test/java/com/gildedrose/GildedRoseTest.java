@@ -193,5 +193,54 @@ class GildedRoseTest {
         assertEquals(5, app.items[0].sellIn);
         assertEquals(-5, app.items[1].sellIn);
     }
+
+    // endregion
+    // region conjured items
+
+    @Test
+    void assertConjuredItemQualityNotBelowZero() {
+        Item[] items = new Item[] {
+                new ItemBuilder().named("Conjured item").expiresIn(1).withQuality(1).build(),
+                new ItemBuilder().named("Conjured item").expiresIn(-1).withQuality(2).build(),
+        };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(0, app.items[0].quality);
+        assertEquals(0, app.items[1].quality);
+    }
+
+    @Test
+    void assertConjuredItemQualityDecreasesBeforeSellIn() {
+        Item[] items = new Item[] {
+                new ItemBuilder().named("Conjured item").expiresIn(3).withQuality(4).build(),
+                new ItemBuilder().named("Conjured item").expiresIn(3).withQuality(3).build(),
+        };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(2, app.items[0].quality);
+        assertEquals(1, app.items[1].quality);
+    }
+
+    @Test
+    void assertConjuredItemQualityDecreasesTwiceAsFastAfterSellIn() {
+        Item[] items = new Item[] { new ItemBuilder().named("Conjured item").expiresIn(-1).withQuality(5).build() };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(1, app.items[0].quality);
+    }
+
+    @Test
+    void assertConjuredItemSellInDecreases() {
+        Item[] items = new Item[] {
+                new ItemBuilder().named("Conjured item").expiresIn(3).withQuality(0).build(),
+                new ItemBuilder().named("Conjured item").expiresIn(1).withQuality(0).build(),
+                new ItemBuilder().named("Conjured item").expiresIn(-1).withQuality(0).build(),
+        };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(2, app.items[0].sellIn);
+        assertEquals(0, app.items[1].sellIn);
+        assertEquals(-2, app.items[2].sellIn);
+    }
     // endregion
 }

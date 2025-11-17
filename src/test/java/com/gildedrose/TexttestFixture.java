@@ -16,7 +16,6 @@ public class TexttestFixture {
                         .build(),
                 new ItemBuilder().named("Backstage passes to a TAFKAL80ETC concert").expiresIn(5).withQuality(49)
                         .build(),
-                // this conjured item does not work properly yet
                 new ItemBuilder().named("Conjured Mana Cake").expiresIn(3).withQuality(6).build()
         };
 

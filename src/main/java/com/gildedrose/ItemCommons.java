@@ -13,6 +13,8 @@ public class ItemCommons {
     private static final ArrayList<String> LEGENDARY_ITEMS = new ArrayList<>(
             Arrays.asList("Sulfuras, Hand of Ragnaros"));
 
+    private static final String CONJURED_KEYWORD = "Conjured";
+
     private ItemCommons() {
     }
 
@@ -30,5 +32,9 @@ public class ItemCommons {
 
     public static boolean isLegendary(Item item) {
         return LEGENDARY_ITEMS.contains(item.name);
+    }
+
+    public static boolean isConjured(Item item) {
+        return item.name.contains(CONJURED_KEYWORD);
     }
 }

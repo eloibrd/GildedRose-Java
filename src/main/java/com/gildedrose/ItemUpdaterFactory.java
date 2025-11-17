@@ -15,6 +15,9 @@ public class ItemUpdaterFactory {
         if (ItemCommons.isLegendary(item))
             return new LegendaryItemUpdater();
 
+        if (ItemCommons.isConjured(item))
+            return new ConjuredItemUpdater();
+
         return new CommonUpdater();
     }
 

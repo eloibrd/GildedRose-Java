@@ -11,6 +11,8 @@ public class ItemUpdaterFactory {
                 return new AgingItemUpdater();
             case "Backstage passes to a TAFKAL80ETC concert":
                 return new ConcertPassUpdater();
+            case "Sulfuras, Hand of Ragnaros":
+                return new LegendaryItemUpdater();
             default:
                 return new CommonUpdater();
         }
